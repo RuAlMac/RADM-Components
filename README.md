@@ -2,7 +2,7 @@
 This repo contains the part schematic and footprint files I use with my Altium projects.
 
 ## Generic vs. Non-Generic Parts
-This library includes two categories of parts: generic and non-generic. A generic part is generally a passive component that may have a variety of size package options and physical properties. A generic part has one schematic symbol, but may have multiple PCB footprints. The user selects which PCB footprint to use based on what size the generic component used is (e.g., placing a `[Cap] SMD Nonpolarized` that uses a 1210 part package). Generic parts included in this library are listed below.
+This library includes two categories of parts: generic and non-generic. A generic part is generally a passive component that may have a variety of size package options and physical properties. A generic part has one schematic symbol, but may have multiple PCB footprints. The user selects which PCB footprint to use based on what size the generic component used is (e.g., placing a `[Cap] SMD Nonpolarized` that uses a `1210` part package). Generic parts included in this library are listed below.
 
 - `[BJT] SMD NPN`
 - `[Cap] SMD Nonpolarized`
@@ -24,7 +24,7 @@ This library includes two categories of parts: generic and non-generic. A generi
 
 A non-generic part is a part that has a distinct PCB footprint (i.e., there are no other parts that (1) do exactly the same thing as this part and (2) fit in the exact same footprint as this part). Most parts in this library are non-generic (e.g., `[Device] Raspberry Pi Zero 2W`).
 
-## Schematic.schlib: Conventions
+## Schematics.schlib: Conventions
 The Schematics.schlib file contains the schematic symbols for the parts in my library. The following are requirements and guidelines for how the names and properties of each schematic symbol should be configured.
 
 ### Design Item ID (Part name)
@@ -77,6 +77,22 @@ A part's description is not visible on a schematic, but is visible alongside Des
 ### Parameters
 A part can have parameters, which function as miscellaneous descriptors for it and can be used in scripting, simulations, and other complex tools in Altium. However, for this library, part parameters are only used to help with describing parts.
 
-Generic parts need to have a couple parameters to help the user differentiate between similar parts. Common parameters generic parts should have include `Size Package` and `<unit value>`. Size package refers to the part package following inches or ANSI/ISO standards. For resistors and capacitors, possible size package options may include 1812, 1210, etc. For diodes and other parts with standardized part packages, possible size package options may include `SOT-89-3`, `SOD-123`, etc. The size package parameter must be red (hex #980000). "Unit value" depends on the unit of measurement of the part, if applicable. For capacitors, this is capacitance; for resistors, this is resistance; for inductors, this is henries; for fuses, this is max allowable current; and for external crystal oscillators, this is frequency. The size 
+Generic parts need to have a couple parameters to help the user differentiate between similar parts. Common parameters generic parts should have include `Size Package` and `<unit value>`. Size package refers to the part package following inches or ANSI/ISO standards. For resistors and capacitors, possible size package options may include `1812`, `1210`, etc. For diodes and other parts with standardized part packages, possible size package options may include `SOT-89-3`, `SOD-123`, etc. The size package parameter must be red (hex #980000). "Unit value" depends on the unit of measurement of the part, if applicable. For capacitors, this is capacitance; for resistors, this is resistance; for inductors, this is henries; for fuses, this is max allowable current; and for external crystal oscillators, this is frequency. The unit value parameter must be green (hex #38761D).
 
 Non-generic parts must have a `<Supplier> Part #` parameter. This is the customer reference number provided for a part on a supplier's website. Example suppliers include Mouser, Digikey, JLCPCB Parts, etc.
+
+## Footprints.pcblib: Conventions
+The Footprints.schlib file contains the schematic symbols for the parts in my library. The following are requirements and guidelines for how the names and properties of each footprint should be configured.
+
+### Layers
+Multiple layers are used in a part's footprint. The following list briefly describes the function of each layer.
+- Top Layer (top copper layer)
+- Bottom Layer (bottom copper layer)
+- 3D Model (the layer where a part's 3D model should reside; 3D models are .step or .stp files)
+- Physical Outline (an outline of the actual physical dimensions of the part)
+- Part Border (an outline surrounding the part, should be offset from physical outline, prevents collisions with other parts on board)
+- Top Overlay (top-layer silkscreen)
+- Bottom Overlay (bottom-layer silkscreen)
+- 
+### Part Names
+Footprints also require unique Design Item IDs. For generic parts, a footprint's Design Item ID should be formatted as `[<type>] <size package>`. Type should be the same as the corresponding schematic symbol's type, while size package should be the size package that footprint represents. For non-generic parts, the footprint's Design Item ID should match its corresponding schematic symbol's Design Item ID exactly.
