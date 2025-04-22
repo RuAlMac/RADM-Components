@@ -1,0 +1,5 @@
+# Ignore Schematic backup files
+Schematics.~(*).SchLib.Zip
+
+# Ignore footprint backup files
+Footprints.~(*).PcbLib.Zip
